@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Importar Funcionários - Ergomaster</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <h1>Importar Funcionários</h1>
+
+  <form id="uploadForm">
+    <label for="file">Selecione o arquivo Excel (.xlsx):</label>
+    <input type="file" id="file" name="file" accept=".xlsx" required />
+    <br/><br/>
+    <button type="submit">Enviar</button>
+  </form>
+
+  <p id="mensagem"></p>
+
+  <hr>
+
+  <button id="listarBtn">Listar Funcionários</button>
+
+  <br>
+  
+<label for="filtro">Filtrar por nome ou matrícula:</label>
+<input type="text" id="filtro" placeholder="Digite aqui..." />
+
+  <p id="erroTabela" style="color: red;"></p>
+
+  <p id="totalLinhas" style="margin-top: 10px;"></p>
+
+  <button id="exportarBtn">Exportar para Excel</button>
+
+  <table id="tabelaFuncionarios" border="1" style="margin-top: 20px; display: none;">
+    <thead>
+      <tr>
+        <th>Matrícula</th>
+        <th>Nome</th>
+        <th>Cargo</th>
+        <th>Centro de Custo</th>
+        <th>Status</th>
+        <!-- Adicione mais colunas aqui conforme necessário -->
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
