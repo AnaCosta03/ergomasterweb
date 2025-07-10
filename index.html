@@ -4,48 +4,54 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Importar Funcionários - Ergomaster</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <h1>Importar Funcionários</h1>
+  <div class="container-fluid px-3 my-4">
 
-  <form id="uploadForm">
-    <label for="file">Selecione o arquivo Excel (.xlsx):</label>
-    <input type="file" id="file" name="file" accept=".xlsx" required />
-    <br/><br/>
-    <button type="submit">Enviar</button>
-  </form>
+    <h1>Importar Funcionários</h1>
 
-  <p id="mensagem"></p>
+    <form id="uploadForm">
+      <label for="file">Selecione o arquivo Excel (.xlsx):</label>
+      <input type="file" id="file" name="file" accept=".xlsx" required />
+      <br/><br/>
+      <button type="submit">Enviar</button>
+    </form>
 
-  <hr>
+    <p id="mensagem"></p>
 
-  <button id="listarBtn">Listar Funcionários</button>
+    <hr>
 
-  <br>
-  
-<label for="filtro">Filtrar por nome ou matrícula:</label>
-<input type="text" id="filtro" placeholder="Digite aqui..." />
+    <button id="listarBtn">Listar Funcionários</button>
 
-  <p id="erroTabela" style="color: red;"></p>
+    <br>
 
-  <p id="totalLinhas" style="margin-top: 10px;"></p>
+    <label for="filtro">Filtrar por nome ou matrícula:</label>
+    <input type="text" id="filtro" placeholder="Digite aqui..." />
 
-  <button id="exportarBtn">Exportar para Excel</button>
+    <p id="erroTabela" style="color: red;"></p>
+    <p id="totalLinhas" style="margin-top: 10px;"></p>
 
-  <table id="tabelaFuncionarios" border="1" style="margin-top: 20px; display: none;">
-    <thead>
-      <tr>
-        <th>Matrícula</th>
-        <th>Nome</th>
-        <th>Cargo</th>
-        <th>Centro de Custo</th>
-        <th>Status</th>
-        <!-- Adicione mais colunas aqui conforme necessário -->
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+    <button id="exportarBtn">Exportar para Excel</button>
+
+    <div class="table-responsive mt-4 d-none" id="tabelaContainer">
+      <table id="tabelaFuncionarios" class="table table-bordered table-striped align-middle table-hover">
+        <thead class="table-secondary">
+          <tr>
+            <th>Matrícula</th>
+            <th>Dv</th>
+            <th>Nome</th>
+            <th>Cargo</th>
+            <th>Centro de Custo</th>        
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+  </div> <!-- fim do .container -->
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="js/main.js"></script>

@@ -46,16 +46,19 @@ document.getElementById("listarBtn").addEventListener("click", function () {
 
         row.innerHTML = `
           <td>${funcionario.matricula}</td>
+          <td>${funcionario.dv}</td>
           <td>${funcionario.nome}</td>
           <td>${funcionario.cargoDescricao}</td>
           <td>${funcionario.centroCustoDescricao}</td>
-          <td>${funcionario.status}</td>
+        
+          <td>${funcionario.statusDescricao}</td>
         `;
 
         tbody.appendChild(row);
       });
 
-      tabela.style.display = "table";
+      document.getElementById("tabelaContainer").classList.remove("d-none");
+
       erro.textContent = "";
 
       // Atualiza o total de linhas
@@ -85,55 +88,21 @@ document.getElementById("filtro").addEventListener("input", function () {
 });
 
 document.getElementById("exportarBtn").addEventListener("click", function () {
-  fetch("http://192.168.15.6:8080/api/basefuncionario/listar")
+  fetch("http://192.168.15.6:8080/api/basefuncionario/exportar")
     .then(response => {
       if (!response.ok) {
-        throw new Error("Erro ao buscar funcionários");
+        throw new Error("Erro ao exportar o Excel");
       }
-      return response.json();
+      return response.blob(); // Recebe o Excel como blob
     })
-    .then(data => {
-      // Remove só o campo "id", mantém "status"
-      const funcionariosFiltrados = data.map(({ id, ...rest }) => rest);
-
-      // Cabeçalhos conforme seu pedido, na ordem exata
-      const headers = [
-        "Matrícula", "DV", "Nome", "Cargo Básico-Descrição", "Centro Custo", "Centro Custo-Descrição",
-        "Sexo", "ID Federal", "Carteira Identidade", "Data Nascimento", "Nome Mãe",
-        "Data Admissão", "Tipo Mão-de-Obra-Descrição", "Endereço", "Número Endereço", "CEP", "Bairro",
-        "Estado Civil", "Telefone", "PIS", "Turno-Descrição", "Grau Instrução-Descrição",
-        "Classif Ocupação", "E-mail", "Término Contrato", "Status"
-      ];
-
-      // Chaves correspondentes na ordem correta para acessar os dados
-      const keys = [
-        "matricula", "dv", "nome", "cargoDescricao", "centroCusto", "centroCustoDescricao",
-        "sexo", "idFederal", "identidade", "dataNascimento", "nomeMae",
-        "dataAdmissao", "maoDeObraDescricao", "endereco", "nEndereco", "cep", "bairro",
-        "estadoCivil", "telefone", "pis", "turnoDescricao", "grauInstrucao",
-        "classifOcupacao", "email", "terminoContrato", "status"
-      ];
-
-      function formatDate(dataStr) {
-        if (!dataStr) return "";
-        const d = new Date(dataStr);
-        if (isNaN(d)) return dataStr;
-        return d.toISOString().split('T')[0];
-      }
-
-      const dados = funcionariosFiltrados.map(func => keys.map(chave => {
-        if (["dataNascimento", "dataAdmissao", "terminoContrato"].includes(chave)) {
-          return formatDate(func[chave]);
-        }
-        return func[chave] ?? "";
-      }));
-
-      const worksheet = XLSX.utils.aoa_to_sheet([headers, ...dados]);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Funcionários");
-
-      XLSX.writeFile(workbook, "funcionarios.xlsx");
-      alert("Exportação concluída com sucesso!");
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "BASE_2025.xlsx"; // Nome do arquivo
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
     })
     .catch(error => {
       alert("Erro ao exportar: " + error.message);
